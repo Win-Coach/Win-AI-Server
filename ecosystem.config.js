@@ -3,17 +3,17 @@ module.exports = {
     // 1. 애플리케이션 이름
     name: 'win-ai-server',
     
-    // 2. 실행할 스크립트 (가상환경의 uvicorn)
-    script: './venv/bin/uvicorn',
+    // 2. 실행할 스크립트 (Gunicorn을 실행)
+    script: './venv/bin/gunicorn',
     
-    // 3. uvicorn에 전달할 인자 (안정성을 위해 --workers 1 추가)
-    args: 'main:app --host 0.0.0.0 --port 8000 --workers 1',
+    // 3. Gunicorn에 전달할 설정값
+    // -w 1 : 워커(일꾼) 1개 사용
+    // -k uvicorn.workers.UvicornWorker : Uvicorn을 일꾼으로 사용
+    // main:app : 실행할 FastAPI 앱
+    // --bind 0.0.0.0:8000 : 접속 주소와 포트
+    args: '-w 1 -k uvicorn.workers.UvicornWorker main:app --bind 0.0.0.0:8000',
     
-    // 4. 스크립트를 실행할 인터프리터 (가상환경의 python)
-    interpreter: './venv/bin/python',
-    
-    // 5. 실행 모드를 'cluster'로 변경 (가장 중요한 변경점)
-    exec_mode: 'cluster',
-    instances: 1
+    // Gunicorn은 파이썬 프로그램이므로, PM2의 interpreter 설정이 필요 없습니다.
+    // PM2는 Gunicorn을 직접 실행하고, Gunicorn이 내부적으로 파이썬을 올바르게 사용합니다.
   }]
 };
