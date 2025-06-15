@@ -12,8 +12,8 @@ module.exports = {
     // 4. 스크립트를 실행할 인터프리터 (가상환경의 python)
     interpreter: './venv/bin/python',
     
-    // 5. PM2와 Uvicorn의 충돌을 방지하는 설정 (중요!)
-    exec_mode: 'fork',
-    fork: false
+    // 5. 재시작 지연 시간 설정 (중요!)
+    // 너무 빠른 재시작으로 인한 문제를 방지하기 위해 3초의 딜레이를 줍니다.
+    restart_delay: 3000
   }]
 };
